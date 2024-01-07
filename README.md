@@ -9,5 +9,15 @@ than the LSP backend can.
 ## Installation
 With [Lazy.nvim](https://github.com/folke/lazy.nvim/tree/main):
 ```lua
-{ "catlee/pull_diags.nvim", event = "LspAttach" }
+{ "catlee/pull_diags.nvim", event = "LspAttach", opts = {} }
+```
+
+## Configuration
+The delay between last change to a buffer and request to the LSP backend can be
+configured via the `timeout` parameter.
+
+e.g.
+
+```lua
+{ "catlee/pull_diags.nvim", event = "LspAttach", opts = { timeout = 1000 } }
 ```
