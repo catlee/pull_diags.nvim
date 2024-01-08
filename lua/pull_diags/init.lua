@@ -11,12 +11,10 @@ local function setup_diagnostics(client, buffer, opts)
         local err_msg = string.format("diagnostics error - %s", vim.inspect(err))
         log.error(err_msg)
       end
-      if not result then
-        return
-      end
+      local items = (result and result.items) or {}
       vim.lsp.diagnostic.on_publish_diagnostics(
         nil,
-        vim.tbl_extend("keep", params, { diagnostics = result.items }),
+        vim.tbl_extend("keep", params, { diagnostics = items }),
         { client_id = client.id },
         {}
       )
