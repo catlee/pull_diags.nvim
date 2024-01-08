@@ -4,6 +4,7 @@ local log = require("vim.lsp.log")
 
 local _timers = {}
 local function setup_diagnostics(client, buffer, opts)
+  local timer_name = client.name .. buffer
   local diagnostic_handler = function()
     local params = vim.lsp.util.make_text_document_params(buffer)
     client.request("textDocument/diagnostic", { textDocument = params }, function(err, result)
@@ -27,14 +28,14 @@ local function setup_diagnostics(client, buffer, opts)
 
   vim.api.nvim_buf_attach(buffer, false, {
     on_lines = function()
-      if _timers[buffer] then
-        vim.fn.timer_stop(_timers[buffer])
+      if _timers[timer_name] then
+        vim.fn.timer_stop(_timers[timer_name])
       end
-      _timers[buffer] = vim.fn.timer_start(timeout, diagnostic_handler)
+      _timers[timer_name] = vim.fn.timer_start(timeout, diagnostic_handler)
     end,
     on_detach = function()
-      if _timers[buffer] then
-        vim.fn.timer_stop(_timers[buffer])
+      if _timers[timer_name] then
+        vim.fn.timer_stop(_timers[timer_name])
       end
     end,
   })
